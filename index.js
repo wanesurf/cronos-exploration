@@ -28,18 +28,25 @@ async function eth_getBalance(address) {
     return formattedBalance;
   } catch (error) {
     console.log(`Failed to get balance for ${address}: ${error.message}`);
+    throw error;
   }
 }
 
 app.get("/balance/:address/:tokenAddress", async (req, res) => {
   const address = req.params.address;
   const tokenAddress = req.params.tokenAddress;
-  const { balance, symbol } = await cerc20_getBalance(address, tokenAddress);
-  res.json({
-    address: address,
-    balance: balance,
-    symbol: symbol,
-  });
+  try {
+    const { balance, symbol } = await cerc20_getBalance(address, tokenAddress);
+    res.json({
+      address: address,
+      balance: balance,
+      symbol: symbol,
+    });
+  } catch (error) {
+    res.json({
+      error: `Failed to get token balance for ${address}: ${error.message}`,
+    });
+  }
 });
 
 async function cerc20_getBalance(address, tokenAddress) {
@@ -79,6 +86,7 @@ async function cerc20_getBalance(address, tokenAddress) {
     return { balance: formattedBalance, symbol: symbol };
   } catch (error) {
     console.log(`Failed to get balance for ${address}: ${error.message}`);
+    throw error;
   }
 }
 
