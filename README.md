@@ -46,7 +46,7 @@ The application provides the following APIs:
    **Example:**
 
    ```sh
-    curl http://localhost:3000/balance/0xEa4B19449dE124e33083eb8cb2B53964E2D27d9c
+    curl -H "x-api-key: hello-cronos" http://localhost:3000/balance/0xEa4B19449dE124e33083eb8cb2B53964E2D27d9c
    ```
 
 2. **GET /token-balance/:address/:contractAddress**
@@ -56,5 +56,5 @@ The application provides the following APIs:
    **Example:**
 
    ```sh
-    curl http://localhost:3000/balance/0x2e8Ec82F432d57Ec1585dC1Cb2313972AB63Ecac/0x2d03bece6747adc00e1a131bba1469c15fd11e03
+   curl -H "x-api-key: hello-cronos" http://localhost:3000/balance/0x2e8Ec82F432d57Ec1585dC1Cb2313972AB63Ecac/0x2d03bece6747adc00e1a131bba1469c15fd11e03
    ```

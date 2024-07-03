@@ -4,12 +4,25 @@ const port = 3000;
 const cronosRpcMainnet = "https://evm.cronos.org";
 const { Web3 } = require("web3");
 
+// Hardcoded API key for demonstration purposes
+const API_KEY = "hello-cronos";
+
+// Middleware function to check API key
+function apiKeyAuth(req, res, next) {
+  const apiKey = req.headers["x-api-key"];
+  if (apiKey && apiKey === API_KEY) {
+    next(); // API key is valid, proceed to the next middleware or route handler
+  } else {
+    res.status(401).json({ error: "Unauthorized: Invalid API key" });
+  }
+}
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 // Returns the CRO balance of the given account address.
-app.get("/balance/:address", async (req, res) => {
+app.get("/balance/:address", apiKeyAuth, async (req, res) => {
   const address = req.params.address;
   const balance = await eth_getBalance(address);
   res.json({
@@ -32,7 +45,7 @@ async function eth_getBalance(address) {
   }
 }
 
-app.get("/balance/:address/:tokenAddress", async (req, res) => {
+app.get("/balance/:address/:tokenAddress", apiKeyAuth, async (req, res) => {
   const address = req.params.address;
   const tokenAddress = req.params.tokenAddress;
   try {
